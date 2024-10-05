@@ -9,7 +9,7 @@ const TripVideo: React.FC = () => {
       {/* Video */}
       <video
         className="w-full lg:h-[400px] h-56 object-contain" // Set a fixed height for the video
-        src="/assets/trip.mp4"
+        src="/assets/vd.mp4"
         autoPlay
         loop
         muted
