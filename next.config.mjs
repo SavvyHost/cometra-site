@@ -9,7 +9,7 @@ const nextConfig = {
   },
   transpilePackages: ["@mui/x-date-pickers"],
 
-  output: "export",
+  // output: "export",
 
   images: {
     unoptimized: true,
