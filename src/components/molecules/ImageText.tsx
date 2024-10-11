@@ -5,23 +5,15 @@ interface ImageTextProps {
   src: StaticImageData;
   alt: string;
   text: string;
-  onClick: () => void;
-  isActive: boolean;
+  isActive?: boolean;
 }
 
-const ImageText: React.FC<ImageTextProps> = ({
-  src,
-  alt,
-  text,
-  onClick,
-  isActive,
-}) => {
+const ImageText: React.FC<ImageTextProps> = ({ src, alt, text, isActive }) => {
   return (
     <div
-      className={`flex flex-col items-center justify-center lg:m-2 m-1 lg:p-2 p-1  text-center cursor-pointer lg:bg-white ${
+      className={`flex flex-col items-center justify-center lg:m-2 m-1 lg:p-2 p-1 text-center cursor-pointer lg:bg-white ${
         isActive ? " rounded-xl border border-blue-800 " : ""
       }`}
-      onClick={onClick}
     >
       <Image
         src={src}

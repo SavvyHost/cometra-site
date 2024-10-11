@@ -5,10 +5,8 @@ type Props = {};
 
 const TripClients: React.FC<Props> = (props) => {
   return (
-    <div className="w-full max-w-4xl p-4">
-      <h2 className="text-2xl font-bold text-[#0C1D6D] ml-3 mb-4">
-        Client Review
-      </h2>
+    <div className="w-full lg:p-0 p-3">
+      <h2 className="text-3xl font-bold text-[#0C1D6D]  mb-4">Client Review</h2>
       <div className="bg-white/30 backdrop-blur-md border rounded-lg p-6 shadow-sm flex flex-col gap-4 mx-auto md:w-3/4">
         <div className="flex justify-between items-start">
           <div className="flex gap-1">

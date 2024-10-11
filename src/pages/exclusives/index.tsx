@@ -1,38 +1,36 @@
-// FilterAndCards.tsx
-import React, { useState } from "react";
+import React from "react";
 import ImageGallery from "@/components/organisms/ImageGallery";
 import CardComponent from "@/components/organisms/ExclusivesCard";
+import fetchData from "@/helper/FetchData";
+import { TourPackage } from "@/types/tour";
 
-const FilterAndCards: React.FC = () => {
-  const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
+interface FilterAndCardsProps {
+  toursData: TourPackage[];
+}
 
-  const handleFilterChange = (category: string) => {
-    setActiveFilters((prevFilters) => {
-      const newFilters = new Set(prevFilters);
-      if (newFilters.has(category)) {
-        newFilters.delete(category);
-      } else {
-        newFilters.add(category);
-      }
-      return newFilters;
-    });
-  };
-
+const FilterAndCards: React.FC<FilterAndCardsProps> = ({ toursData }) => {
   return (
     <div className="bg-[#F7F7F9] lg:px-16 lg:py-6 py-4">
       <h3 className="ml-4 text-[#0C1D6D] font-bold text-2xl">
         Choose Your Trip
       </h3>
-      <ImageGallery
-        onFilterChange={handleFilterChange}
-        activeFilters={activeFilters}
-      />
+      <ImageGallery />
       <h3 className="ml-4 my-4 text-[#0C1D6D] font-bold text-2xl">
         VIP Exclusives
       </h3>
-      <CardComponent activeFilters={activeFilters} />
+      <CardComponent toursData={toursData} />
     </div>
   );
 };
 
 export default FilterAndCards;
+
+export async function getServerSideProps() {
+  const data = await fetchData("tours");
+
+  return {
+    props: {
+      toursData: data.data as TourPackage[], // Ensure this matches the type
+    },
+  };
+}

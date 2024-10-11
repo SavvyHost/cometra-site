@@ -17,15 +17,7 @@ const carouselSettings = {
   arrows: false,
 };
 
-interface ImageGalleryProps {
-  onFilterChange: (category: string) => void;
-  activeFilters: Set<string>;
-}
-
-const ImageGallery: React.FC<ImageGalleryProps> = ({
-  onFilterChange,
-  activeFilters,
-}) => {
+const ImageGallery: React.FC = () => {
   const images = [
     { src: Trip, text: "Category 1" },
     { src: Trip1, text: "Category 2" },
@@ -44,8 +36,6 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
             src={img.src}
             alt={`Image ${index + 1}`}
             text={img.text}
-            onClick={() => onFilterChange(img.text)}
-            isActive={activeFilters.has(img.text)}
           />
         ))}
       </div>
@@ -59,8 +49,6 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({
                 src={img.src}
                 alt={`Image ${index + 1}`}
                 text={img.text}
-                onClick={() => onFilterChange(img.text)}
-                isActive={activeFilters.has(img.text)}
               />
             </div>
           ))}

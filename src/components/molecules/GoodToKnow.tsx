@@ -1,90 +1,55 @@
-import React, { useState } from "react";
-import { FiChevronUp, FiChevronDown } from "react-icons/fi"; // Add this import
+import React from "react";
+import { FiCheckCircle, FiXCircle } from "react-icons/fi";
 
-type Props = {};
+type GoodToKnowProps = {
+  includes: { description: string; status: string }[];
+};
 
-const GoodToKnow = (props: Props) => {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-
-  // Function to toggle collapse
-  const handleToggle = (index: number) => {
-    setActiveIndex(activeIndex === index ? null : index);
-  };
-
-  const programs = [
-    {
-      day: "Day 1",
-      title: "French Quarter",
-      duration: "30 minutes",
-      admission: "Admission Ticket Free",
-    },
-    {
-      day: "Day 2",
-      title: "Garden District",
-      duration: "45 minutes",
-      admission: "Admission Ticket Required",
-    },
-    {
-      day: "Day 3",
-      title: "City Park",
-      duration: "1 hour",
-      admission: "Admission Ticket Free",
-    },
-    {
-      day: "Day 1",
-      title: "French Quarter",
-      duration: "30 minutes",
-      admission: "Admission Ticket Free",
-    },
-    {
-      day: "Day 2",
-      title: "Garden District",
-      duration: "45 minutes",
-      admission: "Admission Ticket Required",
-    },
-    {
-      day: "Day 3",
-      title: "City Park",
-      duration: "1 hour",
-      admission: "Admission Ticket Free",
-    },
-  ];
+const GoodToKnow: React.FC<GoodToKnowProps> = ({ includes }) => {
+  // Split the includes into "included" and "excluded" based on the status
+  const includedItems = includes.filter((item) => item.status === "yes");
+  const excludedItems = includes.filter((item) => item.status === "no");
 
   return (
-    <div className=" ml-6">
-      <h2 className="text-2xl font-bold mb-4 text-[#0C1D6D]">Good To Know</h2>
-      <div className=" lg:w-2/3 w-full pr-4 lg:px-0">
-        <div className="grid grid-cols-1 gap-4">
-          {programs.map((item, index) => (
-            <div
-              key={index}
-              className="border-b border-gray-200 pb-4 last:border-b-0"
-            >
-              <div className="flex flex-col w-full">
-                <div
-                  onClick={() => handleToggle(index)}
-                  className="cursor-pointer flex justify-between items-center"
+    <div className="lg:p-0 p-3">
+      <h2 className="text-3xl font-bold mb-6 text-[#0C1D6D]">Good To Know</h2>
+      <div className="lg:w-full w-full pr-4 lg:px-0">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Included Items */}
+          <div>
+            <h3 className="text-xl font-semibold text-green-600 mb-4">
+              Included
+            </h3>
+            <ul>
+              {includedItems.map((item, index) => (
+                <li
+                  key={index}
+                  className="flex items-center text-gray-700 mb-2"
                 >
-                  <h3 className="text-lg font-medium mb-2">
-                    {item.day}: {item.title}
-                  </h3>
-                  {activeIndex === index ? (
-                    <FiChevronUp className="text-gray-600" />
-                  ) : (
-                    <FiChevronDown className="text-gray-600" />
-                  )}
-                </div>
+                  <FiCheckCircle className="text-green-600 mr-2" />
+                  <span>{item.description}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-                {activeIndex === index && (
-                  <div className="mt-2 text-gray-600 transition-all duration-300 ease-in-out">
-                    <p>
-                      {item.duration} + {item.admission}
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
+          {/* Excluded Items */}
+          <div>
+            <h3 className="text-xl font-semibold text-red-600 mb-4">
+              Excluded
+            </h3>
+            <ul>
+              {excludedItems.map((item, index) => (
+                <li
+                  key={index}
+                  className="flex items-center text-gray-700 mb-2"
+                >
+                  <FiXCircle className="text-red-600 mr-2" />
+                  <span>{item.description}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
