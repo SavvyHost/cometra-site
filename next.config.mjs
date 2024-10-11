@@ -7,9 +7,9 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  transpilePackages: ['@mui/x-date-pickers'],
+  transpilePackages: ["@mui/x-date-pickers"],
 
-  // output: "export",
+  output: "export",
 
   images: {
     unoptimized: true,

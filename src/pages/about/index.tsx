@@ -12,7 +12,7 @@ const about = (props: Props) => {
       <VipExclusive />
       <MissionVisionComponent />
       <OurClients />
-      <Faqs />
+      {/* <Faqs /> */}
     </div>
   );
 };
