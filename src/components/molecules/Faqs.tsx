@@ -22,7 +22,7 @@ const Faqs: React.FC<FaqsProps> = ({ questions }) => {
   return (
     <div className="flex justify-center py-9 items-start ">
       <div className="lg:w-full w-full px-4 lg:px-0">
-        <h2 className="text-2xl font-bold mb-4 text-[#0C1D6D]">FAQS</h2>
+        <h2 className="text-3xl font-bold mb-6 text-[#0C1D6D]">FAQS</h2>
         <div className="grid grid-cols-1 gap-4">
           {questions.map((item, index) => (
             <div
