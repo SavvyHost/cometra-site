@@ -129,9 +129,10 @@ const CardComponent: React.FC<CardComponentProps> = ({ toursData }) => {
                     <h2 className="mt-2 text-lg font-semibold text-gray-900">
                       {tour.title}
                     </h2>
-                    <p className="mt-2 text-sm text-gray-600 line-clamp-3">
-                      {tour.description}
-                    </p>
+                    <p
+                      className="text-gray-700 line-clamp-3"
+                      dangerouslySetInnerHTML={{ __html: tour.description }}
+                    />
                     <div className="mt-3 space-y-1">
                       <div className="text-xs text-gray-600">
                         <span className="font-bold">Destination:</span>{" "}
