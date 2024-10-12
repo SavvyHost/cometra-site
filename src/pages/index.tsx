@@ -1,22 +1,40 @@
-import FourSection from "@/components/organisms/FourSection";
+import React from "react";
 import HeroSection from "@/components/organisms/HeroSection";
-import OurClients from "@/components/organisms/OurClients";
 import SecondSection from "@/components/organisms/SecondSection";
 import ThirdSection from "@/components/organisms/ThirdSection";
-import React from "react";
+import FourSection from "@/components/organisms/FourSection";
+import OurClients from "@/components/organisms/OurClients";
+import fetchData from "@/helper/FetchData";
+import { ToursData } from "@/types/tour";
 
-type Props = {};
+interface HomeProps {
+  toursData: {
+    status: number;
+    message: string;
+    data: ToursData[];
+  };
+}
 
-const COMETRA = (props: Props) => {
+export default function COMETRA({ toursData }: HomeProps) {
+  console.log("🚀 ~ Home ~ toursData:", toursData);
+
   return (
     <div className="">
       <HeroSection />
       <SecondSection />
-      <ThirdSection />
+      <ThirdSection toursData={toursData.data} />
       <FourSection />
       <OurClients />
     </div>
   );
-};
+}
 
-export default COMETRA;
+export async function getServerSideProps() {
+  const data = await fetchData("tours");
+
+  return {
+    props: {
+      toursData: data,
+    },
+  };
+}

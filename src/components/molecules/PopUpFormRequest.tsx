@@ -1,309 +1,225 @@
 import React, { useState } from "react";
+import { Form, Formik, useFormikContext } from "formik";
+import { Minus, Plus } from "lucide-react";
+import PhoneInput from "react-phone-number-input";
+import dayjs, { Dayjs } from "dayjs";
+import { useMutate } from "@/hooks/UseMutate";
+import { notify } from "@/utils/toast";
 import {
-  Button,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
+  Button,
   TextField,
+  Select,
   MenuItem,
-  Checkbox,
-  FormControlLabel,
-  IconButton, // Import IconButton for close button
+  FormControl,
+  InputLabel,
+  Typography,
+  IconButton,
+  Grid, // Material UI Grid component
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close"; // Import CloseIcon
-import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import { Dayjs } from "dayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import DatePickerModal from "@/components/molecules/dataPicker";
+import SelectNationality from "./selects/SelectNationality";
+import SelectMonth from "./selects/SelectMonth";
 
-interface RequestFormModalProps {
-  open: boolean;
-  onClose: () => void;
-  title: string;
-}
-
-interface FormData {
-  startDate: Dayjs | null;
-  adults: string;
-  children: string;
-  singleRooms: string;
-  doubleRooms: string;
-  tripleRooms: string;
-  firstName: string;
-  familyName: string;
-  phoneNumber: string;
-  email: string;
-  acceptPolicy: boolean;
-}
-
-const RequestFormModal: React.FC<RequestFormModalProps> = ({
-  open,
-  onClose,
-  title,
-}) => {
-  const [formData, setFormData] = useState<FormData>({
-    startDate: null,
-    adults: "",
-    children: "",
-    singleRooms: "",
-    doubleRooms: "",
-    tripleRooms: "",
-    firstName: "",
-    familyName: "",
-    phoneNumber: "",
-    email: "",
-    acceptPolicy: false,
-  });
-
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, checked } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: name === "acceptPolicy" ? checked : value,
-    }));
-  };
-
-  const handleDateChange = (newValue: Dayjs | null) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      startDate: newValue,
-    }));
-    setIsCalendarOpen(false);
-  };
-
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    console.log("Form submitted:", formData);
-    onClose();
-  };
-
-  const handleInputFocus = () => {
-    setIsCalendarOpen(true);
-  };
+const DatePickerWrapper = ({ isOpen, onClose, onDateChange }) => {
+  const { setFieldValue } = useFormikContext();
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Dialog
-        open={open}
-        onClose={onClose}
-        fullWidth
-        fullScreen
-        maxWidth="md"
-        sx={{
-          "& .MuiDialog-paper": {
-            width: "60%", // Default width for larger screens
-            height: "90%", // Default height for larger screens
-            margin: 0,
-
-            display: "flex",
-            flexDirection: "column",
-            "@media (max-width: 600px)": {
-              width: "100%", // Full width for mobile screens
-              height: "100%", // Full height for mobile screens
-              borderRadius: 0, // Optional: remove border-radius on mobile
-            },
-          },
-        }}
-      >
-        <DialogTitle
-          className=" text-2xl text-center font-dinCondensed"
-          sx={{ position: "relative", paddingRight: "40px" }} // Ensure space for close button
-        >
-          {title}
-          <IconButton
-            onClick={onClose}
-            sx={{ position: "absolute", right: 8, top: 8, color: "red" }} // Position "X" button at the top-right corner
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-
-        <form
-          onSubmit={handleSubmit}
-          style={{ flex: 1, display: "flex", flexDirection: "column" }}
-        >
-          <DialogContent className="space-y-4">
-            {/* Date input and calendar */}
-            <div className="space-y-2">
-              <h3 className="font-semibold">Dates</h3>
-              <TextField
-                fullWidth
-                label="Start Date"
-                value={
-                  formData.startDate
-                    ? formData.startDate.format("MM/DD/YYYY")
-                    : ""
-                }
-                onFocus={handleInputFocus}
-              />
-              {isCalendarOpen && (
-                <DateCalendar
-                  value={formData.startDate}
-                  onChange={handleDateChange}
-                />
-              )}
-            </div>
-
-            {/* Form fields */}
-            <div className="grid grid-cols-2 gap-4">
-              <TextField
-                select
-                fullWidth
-                name="adults"
-                label="Adults"
-                value={formData.adults}
-                onChange={handleChange}
-              >
-                {[...Array(10)].map((_, i) => (
-                  <MenuItem key={i} value={i + 1}>
-                    {i + 1}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                select
-                fullWidth
-                name="children"
-                label="Children"
-                value={formData.children}
-                onChange={handleChange}
-              >
-                {[...Array(10)].map((_, i) => (
-                  <MenuItem key={i} value={i}>
-                    {i}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4">
-              <TextField
-                select
-                fullWidth
-                name="singleRooms"
-                label="Single"
-                value={formData.singleRooms}
-                onChange={handleChange}
-              >
-                {[...Array(5)].map((_, i) => (
-                  <MenuItem key={i} value={i}>
-                    {i}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                select
-                fullWidth
-                name="doubleRooms"
-                label="Double"
-                value={formData.doubleRooms}
-                onChange={handleChange}
-              >
-                {[...Array(5)].map((_, i) => (
-                  <MenuItem key={i} value={i}>
-                    {i}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                select
-                fullWidth
-                name="tripleRooms"
-                label="Triple"
-                value={formData.tripleRooms}
-                onChange={handleChange}
-              >
-                {[...Array(5)].map((_, i) => (
-                  <MenuItem key={i} value={i}>
-                    {i}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
-
-            {/* Personal Information */}
-            <div className="space-y-2">
-              <h3 className="font-semibold">Personal Information</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <TextField
-                  fullWidth
-                  name="firstName"
-                  label="First Name"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                />
-                <TextField
-                  fullWidth
-                  name="familyName"
-                  label="Family Name"
-                  value={formData.familyName}
-                  onChange={handleChange}
-                />
-              </div>
-              <TextField
-                fullWidth
-                name="phoneNumber"
-                label="Phone Number"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-              />
-              <TextField
-                fullWidth
-                name="email"
-                label="Email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-              />
-            </div>
-
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="acceptPolicy"
-                  checked={formData.acceptPolicy}
-                  onChange={handleChange}
-                  color="primary"
-                />
-              }
-              label="Accept our policy"
-            />
-          </DialogContent>
-
-          <DialogActions
-            className="bg-white z-30"
-            sx={{
-              justifyContent: "center",
-              position: "sticky",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              "@media (max-width: 600px)": {
-                display: "flex",
-                flexDirection: "column",
-              },
-            }}
-          >
-            <Button onClick={onClose} color="primary" fullWidth={true}>
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              className="bg-blue-600"
-              fullWidth={true}
-            >
-              Send Request
-            </Button>
-          </DialogActions>
-        </form>
-      </Dialog>
-    </LocalizationProvider>
+    <DatePickerModal
+      open={isOpen}
+      onClose={onClose}
+      onDateChange={onDateChange}
+      setFieldValue={setFieldValue}
+    />
   );
 };
 
-export default RequestFormModal;
+function MainDataBookingForm({ DetailTour, open, onClose, title }) {
+  const { mutate, isPending } = useMutate({
+    mutationKey: ["bookings"],
+    endpoint: `bookings`,
+    onSuccess: () => {
+      notify("success", "Booking submitted successfully!");
+      onClose();
+    },
+    onError: (err) => {
+      notify("error", err?.response?.data?.message);
+    },
+    formData: true,
+  });
+
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
+  const [rangeDays, setRangeDays] = useState(1);
+
+  const handleDateChange = (date: string, days: number) => {
+    setSelectedDate(dayjs(date));
+    setRangeDays(days);
+  };
+
+  return (
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent>
+        <Formik
+          initialValues={{
+            name: "",
+            email: "",
+            nationality_id: "",
+            month: "",
+            phone: "",
+            start_at: "",
+            num_of_adults: 1,
+            num_of_children: 0,
+            num_of_infants: 0,
+            tour_id: DetailTour?.id,
+            duration: "",
+            phone_code: "+20",
+          }}
+          onSubmit={(values) =>
+            mutate({
+              ...values,
+              phone: values?.phone.slice(2),
+              start_at: selectedDate ? selectedDate.format("YYYY-MM-DD") : "",
+            })
+          }
+        >
+          {({ setFieldValue, values }) => (
+            <Form>
+              {/* Wrap the inputs inside a Grid container */}
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    name="name"
+                    label="Name"
+                    variant="outlined"
+                    onChange={(e) => setFieldValue("name", e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    name="email"
+                    label="Email"
+                    type="email"
+                    variant="outlined"
+                    onChange={(e) => setFieldValue("email", e.target.value)}
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth>
+                    <SelectNationality
+                      name="nationality_id"
+                      placeholder="Select Nationality"
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth>
+                    <SelectMonth name="month" placeholder="Select Month" />
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Start Date"
+                    value={
+                      selectedDate
+                        ? `${selectedDate.format(
+                            "YYYY-MM-DD"
+                          )} to ${selectedDate
+                            .add(rangeDays - 1, "day")
+                            .format("YYYY-MM-DD")}`
+                        : ""
+                    }
+                    onClick={() => setIsDatePickerOpen(true)}
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                  />
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <div className="relative flex flex-col items-center">
+                    <PhoneInput
+                      placeholder="Enter Your Number"
+                      value={values.phone}
+                      onChange={(value) => setFieldValue("phone", value)}
+                      defaultCountry="EG"
+                      className="w-full p-3 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                </Grid>
+
+                {["Adults", "Children", "Infants"].map((label) => {
+                  const name = `num_of_${label.toLowerCase()}`;
+                  return (
+                    <Grid item xs={12} key={label}>
+                      <div className="flex justify-between items-center">
+                        <Typography>{`Number of ${label}`}</Typography>
+                        <div className="flex items-center space-x-2">
+                          <IconButton
+                            onClick={() =>
+                              setFieldValue(name, Math.max(0, values[name] - 1))
+                            }
+                          >
+                            <Minus size={16} />
+                          </IconButton>
+                          <Typography>{values[name]}</Typography>
+                          <IconButton
+                            onClick={() =>
+                              setFieldValue(name, values[name] + 1)
+                            }
+                          >
+                            <Plus size={16} />
+                          </IconButton>
+                        </div>
+                      </div>
+                    </Grid>
+                  );
+                })}
+
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows={4}
+                    label="Additional Details"
+                    variant="outlined"
+                  />
+                </Grid>
+              </Grid>
+
+              <DialogActions>
+                <Button onClick={onClose}>Cancel</Button>
+                <Button
+                  className="bg-blue-600"
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  disabled={isPending}
+                >
+                  {isPending ? "Submitting..." : "Submit"}
+                </Button>
+              </DialogActions>
+
+              <DatePickerWrapper
+                isOpen={isDatePickerOpen}
+                onClose={() => setIsDatePickerOpen(false)}
+                onDateChange={handleDateChange}
+              />
+            </Form>
+          )}
+        </Formik>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export default MainDataBookingForm;

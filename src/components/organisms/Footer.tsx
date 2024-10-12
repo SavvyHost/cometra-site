@@ -1,121 +1,143 @@
 import React from "react";
-import Image from "next/image";
-import IMage from "../../../public/assets/logofooter-removebg-preview.png";
+import Link from "next/link";
+import {
+  Mail,
+  Phone,
+  Facebook,
+  Linkedin,
+  Instagram,
+  Twitter,
+} from "lucide-react";
+import useFetch from "@/hooks/UseFetch";
+
 type Props = {};
 
 const Footer = (props: Props) => {
+  const { data, isLoading, failureReason } = useFetch<any>({
+    queryKey: ["settings?collection=contact"],
+    endpoint: `settings?collection=contact`,
+  });
+
+  const contactInfo = data?.data[3]?.value || {
+    companyName: "COMETRA",
+    email: "",
+    phone: "",
+    address: "",
+    footerDesc: "",
+    whatsApp: "",
+  };
+
+  const learnMoreLinks = [
+    { title: "Terms Condition", href: "/terms" },
+    { title: "Privacy Policy", href: "/privacy" },
+    { title: "Contact", href: "/contact" },
+    { title: "About Us", href: "/about" },
+    { title: "FAQ", href: "/faq" },
+  ];
+
+  const countries = ["Egypt", "Saudi Arabia", "Oman", "Qatar"];
+
+  const socialLinks = [
+    { platform: "Facebook", url: "#" },
+    { platform: "LinkedIn", url: "#" },
+    { platform: "Instagram", url: "#" },
+    { platform: "Twitter", url: "#" },
+  ];
+
+  const getSocialIcon = (platform: string) => {
+    switch (platform) {
+      case "Facebook":
+        return <Facebook className="w-6 h-6" />;
+      case "LinkedIn":
+        return <Linkedin className="w-6 h-6" />;
+      case "Instagram":
+        return <Instagram className="w-6 h-6" />;
+      case "Twitter":
+        return <Twitter className="w-6 h-6" />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <footer className="bg-[#0C1D6D] font-sans mt-4">
-      <div className="container px-6 py-12 mx-auto">
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4">
-          <div className="sm:col-span-2">
-            <Image className="" width={150} height={150} src={IMage} alt="" />
-            <div className="flex flex-col mx-auto mt-6 space-y-3 md:space-y-0 md:flex-row">
-              <input
-                id="email"
-                type="text"
-                className="px-4 py-2  bg-white border rounded-md  text-gray-300 border-gray-600  focus:border-blue-300 focus:outline-none focus:ring focus:ring-opacity-40 focus:ring-blue-300"
-                placeholder="Email Address"
-              />
-              {/* <button className="w-full px-6 py-2.5 text-sm font-medium  text-white transition-colors duration-300 transform md:w-auto md:mx-4 focus:outline-none bg-gray-800 rounded-lg hover:bg-gray-700 focus:ring focus:ring-gray-300 focus:ring-opacity-80">
-                Subscribe
-              </button> */}
-            </div>
+    <footer className="bg-gray-800 px-8 font-sans tracking-wide mt-20">
+      <div className="relative">
+        <div className="bg-blue-600 rounded-md flex flex-col sm:flex-row items-center justify-between sm:px-12 px-4 py-4 absolute top-[-66px] w-full">
+          <div className="text-white text-lg font-semibold mb-2 sm:mb-0">
+            Looking for help?
           </div>
-          <div>
-            <p className="font-semibold  text-white">Quick Link</p>
-            <div className="flex flex-col items-start mt-5 space-y-2">
-              <p className=" transition-colors duration-300 text-gray-300 hover:text-blue-400 hover:underline hover:cursor-pointer ">
-                Home
-              </p>
-              <p className=" transition-colors duration-300 text-gray-300 hover:text-blue-400 hover:underline hover:cursor-pointer ">
-                Who We Are
-              </p>
-              <p className=" transition-colors duration-300 text-gray-300 hover:text-blue-400 hover:underline hover:cursor-pointer ">
-                Our Philosophy
-              </p>
+          <div className="flex items-center gap-4 flex-wrap">
+            <div className="flex items-center gap-2">
+              <Mail className="w-5 h-5 text-white" />
+              <span className="text-white">{contactInfo.email}</span>
             </div>
-          </div>
-          <div>
-            <p className="font-semibold  text-white">Industries</p>
-            <div className="flex flex-col items-start mt-5 space-y-2">
-              <p className=" transition-colors duration-300 text-gray-300 hover:text-blue-400 hover:underline hover:cursor-pointer ">
-                Retail &amp; E-Commerce
-              </p>
-              <p className=" transition-colors duration-300 text-gray-300 hover:text-blue-400 hover:underline hover:cursor-pointer ">
-                Information Technology
-              </p>
-              <p className=" transition-colors duration-300 text-gray-300 hover:text-blue-400 hover:underline hover:cursor-pointer ">
-                Finance &amp; Insurance
-              </p>
+            <div className="flex items-center gap-2">
+              <Phone className="w-5 h-5 text-white" />
+              <span className="text-white">{contactInfo.phone}</span>
             </div>
+            <button className="bg-white text-blue-600 px-4 py-2 rounded-md font-semibold hover:bg-blue-100 transition-colors">
+              Find a branch
+            </button>
           </div>
         </div>
-        <hr className="my-6 border-gray-200 md:my-8  h-2" />
-        <div className="sm:flex sm:items-center sm:justify-between">
-          <div className="flex flex-1 gap-4 hover:cursor-pointer">
-            <Image
-              src="https://www.svgrepo.com/show/303139/google-play-badge-logo.svg"
-              width={130}
-              height={110}
-              alt=""
-            />
-            <Image
-              src="https://www.svgrepo.com/show/303128/download-on-the-app-store-apple-logo.svg"
-              width={130}
-              height={110}
-              alt=""
-            />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 pt-24">
+          <div className="text-white">{contactInfo.companyName} Logo</div>
+          <div>
+            <h4 className="text-xl font-semibold mb-6 text-white">
+              Learn More
+            </h4>
+            <ul className="space-y-4">
+              {learnMoreLinks.map((link, index) => (
+                <li key={index}>
+                  <Link
+                    href={link.href}
+                    className="text-gray-400 text-base hover:text-white transition-colors"
+                  >
+                    {link.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="flex gap-4 hover:cursor-pointer">
-            <Image
-              src="https://www.svgrepo.com/show/303114/facebook-3-logo.svg"
-              width={30}
-              height={30}
-              alt="fb"
-            />
-            <Image
-              src="https://www.svgrepo.com/show/303115/twitter-3-logo.svg"
-              width={30}
-              height={30}
-              alt="tw"
-            />
-            <Image
-              src="https://www.svgrepo.com/show/303145/instagram-2-1-logo.svg"
-              width={30}
-              height={30}
-              alt="inst"
-            />
-            <Image
-              src="https://www.svgrepo.com/show/94698/github.svg"
-              className=""
-              width={30}
-              height={30}
-              alt="gt"
-            />
-            <Image
-              src="https://www.svgrepo.com/show/22037/path.svg"
-              width={30}
-              height={30}
-              alt="pn"
-            />
-            <Image
-              src="https://www.svgrepo.com/show/28145/linkedin.svg"
-              width={30}
-              height={30}
-              alt="in"
-            />
-            <Image
-              src="https://www.svgrepo.com/show/22048/dribbble.svg"
-              className=""
-              width={30}
-              height={30}
-              alt="db"
-            />
+          <div>
+            <h4 className="text-xl font-semibold mb-6 text-white">Countries</h4>
+            <ul className="space-y-4">
+              {countries.map((country, index) => (
+                <li key={index} className="text-gray-400 text-base">
+                  {country}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-xl font-semibold mb-6 text-white">Follow Us</h4>
+            <ul className="flex items-center flex-wrap gap-3">
+              {socialLinks.map((social, index) => (
+                <li key={index}>
+                  <a
+                    href={social.url}
+                    className="text-white hover:text-blue-400 transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {getSocialIcon(social.platform)}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-        <p className="font-dinCondensed text-white p-8 text-start md:text-center md:text-lg md:p-4">
-          © 2023 You Company Inc. All rights reserved.
+
+        {contactInfo.footerDesc && (
+          <div className="mt-8 text-gray-400 text-sm">
+            <p dangerouslySetInnerHTML={{ __html: contactInfo.footerDesc }} />
+          </div>
+        )}
+      </div>
+      <div className="bg-gray-900 py-4 px-4 -mx-8 text-center mt-10">
+        <p className="text-gray-400 text-base">
+          © {contactInfo.companyName}. All rights reserved.
         </p>
       </div>
     </footer>

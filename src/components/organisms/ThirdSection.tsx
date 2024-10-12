@@ -21,31 +21,6 @@ interface ArrowProps {
   onClick?: () => void;
 }
 
-// Data
-const tourPackages: TourPackage[] = [
-  {
-    id: 1,
-    title: "Tour Package Number 1 Title",
-    description:
-      "Description for package 1.Description for package 1.Description for package 1.Description for package 1.Description for package 1.Description for package 1.Description for package 1.",
-    imageUrl: Product,
-  },
-  {
-    id: 2,
-    title: "Tour Package Number 2 Title",
-    description:
-      "Description for package 2.Description for package 2.Description for package 2.Description for package 2.Description for package 2.",
-    imageUrl: Product,
-  },
-  {
-    id: 3,
-    title: "Tour Package Number 3 Title",
-    description:
-      "Description for package 3Description for package 3.Description for package 3.Description for package 3.Description for package 3..",
-    imageUrl: Product,
-  },
-];
-
 // Components
 const PrevArrow: React.FC<ArrowProps> = ({ onClick }) => (
   <button
@@ -65,7 +40,9 @@ const NextArrow: React.FC<ArrowProps> = ({ onClick }) => (
   </button>
 );
 
-const ThirdSection: React.FC = () => {
+const ThirdSection: React.FC<{ toursData?: TourPackage[] }> = ({
+  toursData,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<TourPackage | null>(
     null
@@ -109,34 +86,48 @@ const ThirdSection: React.FC = () => {
     ],
   };
 
+  if (!toursData || !Array.isArray(toursData) || toursData.length === 0) {
+    return (
+      <div className="max-w-screen-lg mx-auto lg:py-20 py-8 flex flex-col items-center">
+        <h2 className="text-2xl lg:text-3xl lg:mb-16 mb-6 text-center">
+          <span className="text-cyan-400 font-dinCondensed">Our</span> <br />
+          <span className="text-[#0C1D6D] font-semibold">Exclusives</span>
+        </h2>
+        <p className="text-gray-600">
+          No tour packages available at the moment.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-screen-lg mx-auto lg:py-20 py-8  flex flex-col items-center">
-      <h2 className="text-2xl lg:text-3xl  lg:mb-16 mb-6 text-center">
+    <div className="max-w-screen-lg mx-auto lg:py-20 py-8 flex flex-col items-center">
+      <h2 className="text-2xl lg:text-3xl lg:mb-16 mb-6 text-center">
         <span className="text-cyan-400 font-dinCondensed">Our</span> <br />
         <span className="text-[#0C1D6D] font-semibold">Exclusives</span>
       </h2>
       <Slider {...settings} className="w-full">
-        {tourPackages.map((pkg) => (
+        {toursData.map((pkg) => (
           <div key={pkg.id} className="px-4 lg:px-8">
             <div className="md:flex cursor-pointer">
               <div className="md:flex-shrink-0">
                 <Image
                   className="w-full h-64 object-cover md:w-[475px] md:h-72 rounded-md"
-                  src={pkg.imageUrl}
+                  src={pkg.main_image.url}
                   alt={pkg.title}
+                  width={200}
+                  height={200}
                 />
               </div>
               <div className="p-4 md:p-8 md:flex-grow">
-                {" "}
-                {/* Added md:flex-grow for better spacing */}
                 <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-blue-800 mb-2">
                   {pkg.title}
                 </h3>
-                <p className="text-gray-600 mb-4 w-full md:w-full h-auto lg:w-[450px] line-clamp-4">
-                  {" "}
-                  {/* Modified width for larger screens */}
-                  {pkg.description}
-                </p>
+
+                <p
+                  className="text-gray-600 mb-4 w-full md:w-full h-auto lg:w-[450px] line-clamp-4"
+                  dangerouslySetInnerHTML={{ __html: pkg.description }}
+                />
                 <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4">
                   <button
                     className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
