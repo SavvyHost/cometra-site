@@ -1,3 +1,4 @@
+// CardComponent.tsx
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,20 +11,18 @@ interface CardComponentProps {
 
 const CardComponent: React.FC<CardComponentProps> = ({ toursData }) => {
   const [openModal, setOpenModal] = useState(false);
-  const [selectedCardTitle, setSelectedCardTitle] = useState<string | null>(
-    null
-  );
+  const [selectedTour, setSelectedTour] = useState<TourPackage | null>(null);
 
-  // Remove activeFilters logic and use toursData directly
   const filteredTours = toursData;
 
-  const handleOpenModal = (title: string) => {
-    setSelectedCardTitle(title);
+  const handleOpenModal = (tour: TourPackage) => {
+    setSelectedTour(tour);
     setOpenModal(true);
   };
 
   const handleCloseModal = () => {
     setOpenModal(false);
+    setSelectedTour(null);
   };
 
   return (
@@ -31,7 +30,8 @@ const CardComponent: React.FC<CardComponentProps> = ({ toursData }) => {
       <RequestFormModal
         open={openModal}
         onClose={handleCloseModal}
-        title={selectedCardTitle || "Details"}
+        title={selectedTour?.title || "Details"}
+        DetailTour={selectedTour}
       />
 
       {/* Desktop View */}
@@ -53,13 +53,12 @@ const CardComponent: React.FC<CardComponentProps> = ({ toursData }) => {
                 <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
                   <button
                     className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded transition-colors"
-                    onClick={() => handleOpenModal(tour.title)}
+                    onClick={() => handleOpenModal(tour)}
                   >
                     Get Price
                   </button>
                 </div>
               </div>
-
               <div className="w-1/2 p-8">
                 <Link href={`/exclusives/${tour.id}`}>
                   <div className="uppercase tracking-wide text-sm text-blue-500 font-semibold">
@@ -114,13 +113,12 @@ const CardComponent: React.FC<CardComponentProps> = ({ toursData }) => {
                   <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
                     <button
                       className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded transition-colors"
-                      onClick={() => handleOpenModal(tour.title)}
+                      onClick={() => handleOpenModal(tour)}
                     >
                       Get Price
                     </button>
                   </div>
                 </div>
-
                 <div className="p-2">
                   <Link href={`/exclusives/${tour.id}`}>
                     <div className="uppercase tracking-wide text-sm text-blue-500 font-semibold">

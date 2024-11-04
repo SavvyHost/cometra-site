@@ -149,6 +149,7 @@ const ThirdSection: React.FC<{ toursData?: TourPackage[] }> = ({
 
       {selectedPackage && (
         <RequestFormModal
+          DetailTour={selectedPackage}
           open={isModalOpen}
           onClose={handleModalClose}
           title={`Request Price for ${selectedPackage.title}`}

@@ -63,7 +63,7 @@ export const selectTheme = (theme: Theme) => ({
 
 export const selectClassNames = (touched: boolean, error: boolean) => ({
   control: ({ menuIsOpen }: { menuIsOpen: boolean }) =>
-    `border-style !rounded-md !shadow-none !shadow-md !border-1 date-range-lib h-[41px] ${
+    `border-style !rounded-none !shadow-none !shadow-md !border-1 date-range-lib h-[41px] ${
       touched && error ? " !border-mainRed" : ""
     } ${menuIsOpen && "!border-[rgba(0, 29, 110, 0.4)]"}`,
   dropdownIndicator: () => `!text-main`,

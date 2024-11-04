@@ -23,6 +23,10 @@ import {
 import DatePickerModal from "@/components/molecules/dataPicker";
 import SelectNationality from "./selects/SelectNationality";
 import SelectMonth from "./selects/SelectMonth";
+import "react-toastify/dist/ReactToastify.css";
+import "react-phone-number-input/style.css";
+import { ToastContainer } from "react-toastify";
+import BaseInputField from "./formik-fields/BaseInputField";
 
 const DatePickerWrapper = ({ isOpen, onClose, onDateChange }) => {
   const { setFieldValue } = useFormikContext();
@@ -42,9 +46,11 @@ function MainDataBookingForm({ DetailTour, open, onClose, title }) {
     mutationKey: ["bookings"],
     endpoint: `bookings`,
     onSuccess: () => {
-      notify("success", "Booking submitted successfully!");
-      onClose();
+      setTimeout(() => {
+        notify("success", "Booking submitted successfully!");
+      }); // 100ms delay
     },
+
     onError: (err) => {
       notify("error", err?.response?.data?.message);
     },
@@ -92,22 +98,19 @@ function MainDataBookingForm({ DetailTour, open, onClose, title }) {
               {/* Wrap the inputs inside a Grid container */}
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    name="name"
-                    label="Name"
-                    variant="outlined"
-                    onChange={(e) => setFieldValue("name", e.target.value)}
+                  <BaseInputField
+                    name="email"
+                    placeholder="Email"
+                    type="email"
+                    className="block w-full border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-gray-200 cursor-pointer"
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    name="email"
-                    label="Email"
-                    type="email"
-                    variant="outlined"
-                    onChange={(e) => setFieldValue("email", e.target.value)}
+                  <BaseInputField
+                    name="name"
+                    placeholder="Name"
+                    type="text"
+                    className="block w-full border border-gray-300 rounded-none focus:outline-none focus:ring-2 focus:ring-gray-200 cursor-pointer"
                   />
                 </Grid>
 
@@ -142,6 +145,14 @@ function MainDataBookingForm({ DetailTour, open, onClose, title }) {
                     InputProps={{
                       readOnly: true,
                     }}
+                    sx={{
+                      "& .MuiInputBase-root": {
+                        height: "50px", // Adjust as needed
+                      },
+                      "& .MuiInputLabel-root": {
+                        top: "-1px", // Adjust label position if necessary
+                      },
+                    }}
                   />
                 </Grid>
 
@@ -152,7 +163,7 @@ function MainDataBookingForm({ DetailTour, open, onClose, title }) {
                       value={values.phone}
                       onChange={(value) => setFieldValue("phone", value)}
                       defaultCountry="EG"
-                      className="w-full p-3 border border-gray-300 rounded-md"
+                      className="w-full p-3 border border-gray-300 rounded-none"
                     />
                   </div>
                 </Grid>
@@ -218,6 +229,7 @@ function MainDataBookingForm({ DetailTour, open, onClose, title }) {
           )}
         </Formik>
       </DialogContent>
+      <ToastContainer />
     </Dialog>
   );
 }
