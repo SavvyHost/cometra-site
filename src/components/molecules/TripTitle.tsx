@@ -3,7 +3,7 @@ import React from "react";
 type TripTitleProps = {
   title: string;
   destination: string;
-  description: string; // <-- Add description to the props
+  description: any; // <-- Add description to the props
   duration: number;
   ageRange: string;
   price: number;
