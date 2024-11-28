@@ -2,7 +2,7 @@ import React from "react";
 
 const BottomBar = () => {
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-[#e5f9ff] lg:p-1 py-1 flex flex-col md:flex-row justify-between items-center shadow-lg">
+    <div className="fixed bottom-0 z-50 left-0 right-0 bg-[#e5f9ff] lg:p-1 py-1 flex flex-col md:flex-row justify-between items-center shadow-lg">
       {/* Text Section */}
       <div className="flex lg:flex-col flex-row gap-2 text-center md:text-left mb-4 md:mb-0 ml-0 md:ml-4">
         <span className="font-bold text-black">Join us</span>
