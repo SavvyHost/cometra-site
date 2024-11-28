@@ -1,9 +1,9 @@
-// CardComponent.tsx
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import RequestFormModal from "../molecules/PopUpFormRequest";
 import { TourPackage } from "@/types/tour";
+import WishlistButton from "../atoms/whishlist/WishlistButton";
 
 interface CardComponentProps {
   toursData: TourPackage[];
@@ -50,6 +50,9 @@ const CardComponent: React.FC<CardComponentProps> = ({ toursData }) => {
                   height={200}
                   className="w-full h-full object-cover transition-transform duration-300 ease-in-out transform group-hover:scale-110"
                 />
+                <div className="absolute top-4 right-4 z-10">
+                  <WishlistButton tour={tour} />
+                </div>
                 <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
                   <button
                     className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded transition-colors"
@@ -110,6 +113,9 @@ const CardComponent: React.FC<CardComponentProps> = ({ toursData }) => {
                     height={300}
                     className="w-full h-44 object-cover transition-transform duration-300 ease-in-out transform group-hover:scale-110"
                   />
+                  <div className="absolute top-2 right-2 z-10">
+                    <WishlistButton tour={tour} />
+                  </div>
                   <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
                     <button
                       className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded transition-colors"

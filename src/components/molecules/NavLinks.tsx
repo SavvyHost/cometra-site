@@ -11,7 +11,7 @@ const NavLinks = ({ isMobile = false, onClose = () => {} }) => (
     <NavLink href="/about" label="About us" onClick={onClose} />
     <NavLink href="/contact" label="Contact us" onClick={onClose} />
     <NavLink href="/terms" label="Terms condation" onClick={onClose} />
-    <NavLink href="/travel-us" label="Why Travel With Us" onClick={onClose} />
+    <NavLink href="/travel-us" label="Why TraveL With Us" onClick={onClose} />
   </div>
 );
 

@@ -14,7 +14,7 @@ const NavLink = ({ href, label, onClick }: NavLinkProps) => {
   return (
     <Link
       href={href}
-      className={`text-lg font-dinCondensed lg:px-3 transition-colors duration-200 ease-in-out ${
+      className={`text-lg font-dinCondensed  transition-colors duration-200 ease-in-out ${
         isActive ? "text-indigo-700 " : "text-black hover:text-blue-500"
       }`}
       onClick={onClick} // Attach onClick handler if provided

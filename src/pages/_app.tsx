@@ -1,4 +1,5 @@
 import MainLayout from "@/components/templates/MainLayout";
+import { WishlistProvider } from "@/contexts/WishlistContext";
 import "@/styles/globals.css";
 import { AppCacheProvider } from "@mui/material-nextjs/v13-pagesRouter";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -21,9 +22,11 @@ export default function App(props: AppProps) {
     <QueryClientProvider client={queryClient}>
       <AppCacheProvider {...props}>
         <ThemeProvider theme={theme}>
-          <MainLayout>
-            <Component {...pageProps} />
-          </MainLayout>
+          <WishlistProvider>
+            <MainLayout>
+              <Component {...pageProps} />
+            </MainLayout>
+          </WishlistProvider>
         </ThemeProvider>
       </AppCacheProvider>
     </QueryClientProvider>

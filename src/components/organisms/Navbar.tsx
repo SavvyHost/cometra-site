@@ -2,6 +2,7 @@ import { useState } from "react";
 import Logo from "../atoms/Logo";
 import NavLinks from "../molecules/NavLinks";
 import Link from "next/link";
+import WishlistIndicator from "../atoms/whishlist/WishlistIndicator";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +20,11 @@ const Navbar = () => {
       {/* Center NavLinks for large screens */}
       <div className="hidden md:flex flex-grow justify-center">
         <NavLinks />
+      </div>
+
+      {/* Wishlist Indicator */}
+      <div className="hidden md:block">
+        <WishlistIndicator />
       </div>
 
       {/* Mobile Hamburger Menu */}
@@ -99,6 +105,10 @@ const MobileMenu = ({
         <div className="flex flex-col items-center p-4">
           {/* Pass closeMenu to NavLinks as onClose prop */}
           <NavLinks isMobile={true} onClose={closeMenu} />
+          {/* Mobile Wishlist Indicator */}
+          <div className="mt-4">
+            <WishlistIndicator />
+          </div>
         </div>
       </div>
     </div>
